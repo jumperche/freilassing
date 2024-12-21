@@ -1,5 +1,4 @@
-# freilassing
-### README for GitHub Repository
+
 
 # Shiny Application for Events and Articles Overview
 
