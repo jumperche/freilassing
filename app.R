@@ -11,9 +11,6 @@ library(promises)
 library(future)
 library(shinyWidgets)
 
-#source("C:/Users/jump/Documents/R/jump2pwa")
-
-#plan(sequential)
 
 plan(multisession)
 # Parallelisierung aktivieren
@@ -479,20 +476,20 @@ events_file <- "events_data.rds"
 
 needs_update <- function(file_path, max_age_hours) {
   if (!file.exists(file_path)) {
-    return(TRUE) # Datei existiert nicht, also muss aktualisiert werden
+    return(TRUE) 
   }
   file_mod_time <- file.info(file_path)$mtime
   elapsed_time <- difftime(Sys.time(), file_mod_time, units = "hours")
-  return(elapsed_time > max_age_hours) # True, wenn Datei zu alt ist
+  return(elapsed_time > max_age_hours) 
 }
 
 update_at_fixed_times <- function(update_function, file, data_val, session, status_label, max_age_hours = 8) {
   if (needs_update(file, max_age_hours)) {
-    # Zunächst lokale Daten anzeigen
+ 
     if (file.exists(file)) {
       existing_data <- tryCatch(readRDS(file), error = function(e) NULL)
       if (!is.null(existing_data)) {
-        data_val(existing_data) # Lokale Daten werden geladen
+        data_val(existing_data)
       }
     }
     
@@ -503,13 +500,13 @@ update_at_fixed_times <- function(update_function, file, data_val, session, stat
       }, error = function(e) NULL)
       
       if (!is.null(new_data)) {
-        saveRDS(new_data, file) # Neue Daten speichern
+        saveRDS(new_data, file)
         new_data
       } else {
         NULL
       }
     }) %...>% {
-      # Neue Daten in ReactiveVal setzen, wenn verfügbar
+     
       if (!is.null(.)) {
         session$sendCustomMessage("update_complete", list(status = status_label)) # Optional: Benutzer benachrichtigen
         data_val(.)
@@ -517,7 +514,7 @@ update_at_fixed_times <- function(update_function, file, data_val, session, stat
     }
   }
   
-  # Plane die nächste Ausführung basierend auf den festen Zeiten
+ 
   current_time <- lubridate::now()
   next_times <- c(
     lubridate::today() + hours(7),
@@ -721,7 +718,7 @@ server <- function(input, output, session) {
     if (file.exists(events_file)) {
       events <- readRDS(events_file)
       events_data(events)
-      #print(head(events))
+     
     } else {
       showModal(modalDialog("Events werden abgerufen...", footer = NULL))
       events <- combine_events()
@@ -954,24 +951,7 @@ server <- function(input, output, session) {
     })
   })
     
-    #  sendSweetAlert(
-    #    session = session,
-    #    title = article$title,
-    #    text = HTML(paste0(
-    #      "<div style='text-align: center;'>",
-    #     if (!is.na(article$image)) paste0(
-    #        "<img src='", article$image, "' style='width: 100%; border-radius: 8px; margin-bottom: 10px;'>"
-    #      ),
-    #      "<p>", article$description, "</p>",
-    #      if (!is.na(article$url) && nzchar(article$url)) paste0(
-    #        "<p><a href='#' onclick='window.open(", article_url_js, ", \"_blank\"); return false;' style='color: #007bff; text-decoration: underline;'>",
-    #        "Original-Link öffnen</a></p>"
-    #      ),
-    #      "</div>"
-    #    )),
-    #    html = TRUE,
-    #   type = NULL
-    #  )
+  
   
   #### Event "Details"-Button####
     observe({
@@ -1017,7 +997,7 @@ server <- function(input, output, session) {
               )),
               html = TRUE,
               size = "l",
-              type = "" # Optional type for better styling
+              type = "" 
             )
           })
         })
