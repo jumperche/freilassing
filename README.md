@@ -5,6 +5,7 @@
 This Shiny application combines articles and event data from various sources, providing a comprehensive and user-friendly interface. Designed with the `shinyMobile` package, the app is mobile-first, offering seamless functionality across devices. It fetches, processes, and dynamically displays information in real-time, with options to update and manage data efficiently.
 
 ---
+https://jumperche.shinyapps.io/freilassing/
 
 ## Features
 
